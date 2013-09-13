@@ -8,7 +8,7 @@ app.db = new pg.Client({
     user: 'worker',
     password: 'ditinua',
     database: 'avmultiscan',
-    host: '10.0.0.254',
+    host: '127.0.0.1',
     port: 5432
 });
 app.db.connect(function(err) {
@@ -70,4 +70,4 @@ app.use(express.compress());
 app.use(express.bodyParser());
 
 require('./routes')(app);
-http.createServer(app).listen(3000);
+http.createServer(app).listen(3002);
