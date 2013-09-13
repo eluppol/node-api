@@ -65,6 +65,19 @@ app.param(function(name, fn){
         }
     }
 });
+
+app.error = function(err, res, result) {
+  if (err || !result) {
+    res.send(500, {status: 500, message: 'Internal server error.'});
+  } else {
+    if (result.rows.length == 0) {
+      res.send(400, {status: 400, message: 'Empty query response.'})
+    } else {
+      res.send(200, {status: 200, message: 'Success.', result: result.rows});
+    }
+  }
+}
+
 app.param('id', /^\d+$/);
 app.use(express.compress());
 app.use(express.bodyParser());

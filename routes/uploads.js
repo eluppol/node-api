@@ -10,7 +10,7 @@ module.exports = function(app) {
                 if (err) {
                     res.send(500, {status: 500, message: 'Internal server error.'});
                 }
-                var message = new Buffer(JSON.stringify({path: path, file_id: file_id}));
+                var message = new Buffer(JSON.stringify({path: path.slice(4), file_id: file_id}));
                 // Get list of known IP from DB
                 db.getHosts(app.db, function(err, result) {
                     if (err) {

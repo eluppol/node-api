@@ -12,7 +12,7 @@ exports.addUpload = function(db, name, user_id, file_id, next) {
         values: [name, user_id, file_id]}, next);
 }
 
-exports.addResult = function(db, j) {
+exports.addResult = function(db, file_id, av_id, result, scan_time, next) {
     query(db, {text: "insert into results (file_id, av_id, result, scan_time) values ($1, $2, $3, $4) returning *",
         values: [file_id, av_id, result, scan_time]}, next);
 }
