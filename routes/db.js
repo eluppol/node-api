@@ -37,6 +37,12 @@ exports.getResults = function(db, options, next) {
     getSomething(db, 'results', options, next);
 }
 
+exports.getAvInfoFromTo = function(db, from, to, next) {
+    text = "select " + options.fields + " from results where time >="
+        + from + " and time <= " + to + ";";
+    query(db, text, next);
+}
+
 function getSomething(db, something, options, next) {
     var text,
         values = [],
