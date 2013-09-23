@@ -38,8 +38,8 @@ exports.getResults = function(db, options, next) {
 }
 
 exports.getAvInfoFromTo = function(db, from, to, next) {
-    text = "select " + options.fields + " from results where time >="
-        + from + " and time <= " + to + ";";
+    text = "select av_id, result from results where time >= \'"
+        + from + "\' and time <= \'" + to + "\';";
     query(db, text, next);
 }
 

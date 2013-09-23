@@ -5,7 +5,7 @@ module.exports = function (app) {
         var options = app.processOptions(req,
             ['from', 'to', 'last'],
             ['id']);
-        db.getAvInfoFromTo(app.db, from, to, function(err, result) {
+	db.getAvInfoFromTo(app.db, options.from, options.to, function(err, result) {
             app.error(err, res, result);
         });
     });
