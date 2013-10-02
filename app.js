@@ -16,12 +16,17 @@ app.db.connect(function(err) {
         console.error(err);
     }
 });
+
+var callback;
+
 // params - options to process from request query
 // filters - options that could be in fileds=... query
 app.processOptions  = function(req, params, filters) {
     var options = {};
     filters = filters.concat(params);
     params = params.concat(['fields', 'offset', 'limit']);
+    // Get callback to return data as JSONP
+    callback = req.query['callback'];
     // Collect parameters from request query to options
     for (var param in req.query) {
         if (params.indexOf(param) != -1) {
@@ -67,15 +72,22 @@ app.param(function(name, fn){
 });
 
 app.error = function(err, res, result) {
+  var content;
+  var stat; 
   if (err || !result) {
-    res.send(500, {status: 500, message: 'Internal server error.'});
+    stat = 500;
+    content = {status: 500, message: 'Internal server error.'};
   } else {
     if (result.rows.length == 0) {
-      res.send(400, {status: 400, message: 'Empty query response.'})
+      stat = 400;
+      content = {status: 400, message: 'Empty query response.'};
     } else {
-      res.send(200, {status: 200, message: 'Success.', result: result.rows});
+      stat = 200;
+      content = {status: 200, message: 'Success.', result: result.rows};
     }
   }
+  res.set('Content-Type', 'application/javascript');
+  res.send(stat, callback ? callback + '(' + JSON.stringify(content) + ')' : content);
 }
 
 app.param('id', /^\d+$/);

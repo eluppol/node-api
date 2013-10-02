@@ -37,9 +37,9 @@ exports.getResults = function(db, options, next) {
     getSomething(db, 'results', options, next);
 }
 
-exports.getAvInfoFromTo = function(db, from, to, next) {
+exports.getAvInfoFromTo = function(db, options, from, to, next) {
     text = "select av_id, result from results where time >= \'"
-        + from + "\' and time <= \'" + to + "\';";
+        + from + "\' and time < \'" + to + "\';";
     query(db, text, next);
 }
 
@@ -91,7 +91,8 @@ function query(db, query, next) {
         if (err) {
             console.error(err);
             next(err);
+        } else {
+          next(undefined, res);
         }
-        next(undefined, res);
     });
 }

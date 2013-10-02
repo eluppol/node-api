@@ -46,6 +46,7 @@ module.exports = function(app) {
 
             stream.on('end', function() {
                 var hash = shasum.digest('hex');
+		stream.close();
                 db.checkHash(app.db, hash, function(err, result) {
                     if (err) {
                         res.send(500, {status: 500, message: 'Internal server error.'});

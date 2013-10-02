@@ -14,6 +14,7 @@ module.exports = function(app) {
   });
 
   app.get('/api/results/:id?', function (req, res) {
+    console.log('ip: ' + req.ip);
     var options = app.processOptions(req,
       ['av_id', 'file_id', 'scan_time'],
       ['id']);
