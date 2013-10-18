@@ -43,8 +43,8 @@ function getSomething(db, something, options, next) {
         index = 1,
         offset = options.offset,
         limit = options.limit,
-        fromTime = options.from,
-        toTime = options.to;
+        from = options.from,
+        to = options.to;
     delete options.offset;
     delete options.limit;
     // If we want returning values
