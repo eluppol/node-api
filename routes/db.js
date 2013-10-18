@@ -76,11 +76,18 @@ function getSomething(db, something, options, next) {
         values[index - 1] = options[option];
         index += 1;
     }
+    text += " and time >= $" + index;
+    values[index - 1] = from;
+    index++;
+    text += " and time < $" + index;
+    values[index - 1] = to;
+    index ++;
     text += " offset $" + index;
     values[index - 1] = offset;
     index += 1;
     text += " limit $" + index;
     values[index - 1] = limit;
+    index += 1;
 
     query(db, {text: text, values: values}, next);
 }
