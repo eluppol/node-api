@@ -37,18 +37,14 @@ exports.getResults = function(db, options, next) {
     getSomething(db, 'results', options, next);
 }
 
-exports.getAvInfoFromTo = function(db, options, from, to, next) {
-    text = "select av_id, result from results where time >= \'"
-        + from + "\' and time < \'" + to + "\';";
-    query(db, text, next);
-}
-
 function getSomething(db, something, options, next) {
     var text,
         values = [],
         index = 1,
         offset = options.offset,
-        limit = options.limit;
+        limit = options.limit,
+        fromTime = options.from,
+        toTime = options.to;
     delete options.offset;
     delete options.limit;
     // If we want returning values
@@ -76,12 +72,19 @@ function getSomething(db, something, options, next) {
         values[index - 1] = options[option];
         index += 1;
     }
-    text += " and time >= $" + index;
-    values[index - 1] = from;
-    index++;
-    text += " and time < $" + index;
-    values[index - 1] = to;
-    index ++;
+
+    var now = new Date();
+    
+    if (from) {
+        text += " and time >= $" + index;
+        values[index - 1] = app.applyDateOffset(now, from);
+        index++;
+    }
+    if (to) {
+        text += " and time < $" + index;
+        values[index - 1] = app.applyDateOffset(now, to);
+        index ++;
+    }
     text += " offset $" + index;
     values[index - 1] = offset;
     index += 1;

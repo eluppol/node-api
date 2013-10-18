@@ -16,7 +16,7 @@ module.exports = function(app) {
   app.get('/api/results/:id?', function (req, res) {
     console.log('ip: ' + req.ip);
     var options = app.processOptions(req,
-      ['av_id', 'file_id', 'scan_time'],
+      ['av_id', 'file_id', 'scan_time', 'from', 'to'],
       ['id']);
     db.getResults(app.db, options, function (err, result) {
       app.error(err, res, result);
