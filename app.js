@@ -23,7 +23,7 @@ var callback;
 // filters - options that could be in fileds=... query
 app.processOptions  = function(req, params, filters) {
     var options = {};
-    var datetime = require('./datetime');
+    var datetime = require('./routes/datetime');
     filters = filters.concat(params);
     params = params.concat(['fields', 'offset', 'limit']);
     // Get callback to return data as JSONP
@@ -58,7 +58,7 @@ app.processOptions  = function(req, params, filters) {
     if (req.query["from"])
         options.from = datetime.parseDate(req.query["from"]);
     if (req.query["to"])
-        options.from = datetime.parseDate(req.query["to"]);
+        options.to = datetime.parseDate(req.query["to"]);
     return options;
 }
 //noinspection JSValidateTypes

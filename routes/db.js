@@ -47,6 +47,8 @@ function getSomething(db, something, options, next) {
         to = options.to;
     delete options.offset;
     delete options.limit;
+    delete options.from;
+    delete options.to;
     // If we want returning values
     if (options.fields) {
         text = "select " + options.fields + " from " + something;
