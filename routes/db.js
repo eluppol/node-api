@@ -74,15 +74,16 @@ function getSomething(db, something, options, next) {
     }
 
     var now = new Date();
+    var datetime = require('./datetime');
     
     if (from) {
         text += " and time >= $" + index;
-        values[index - 1] = app.applyDateOffset(now, from);
+        values[index - 1] = datetime.applyDateOffset(now, from);
         index++;
     }
     if (to) {
         text += " and time < $" + index;
-        values[index - 1] = app.applyDateOffset(now, to);
+        values[index - 1] = datetime.applyDateOffset(now, to);
         index ++;
     }
     text += " offset $" + index;

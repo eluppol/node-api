@@ -19,33 +19,11 @@ app.db.connect(function(err) {
 
 var callback;
 
-app.parseDate = function(datestring) {
-    var tmp = JSON.parse("{" + datestring.replace(/(\d+)([a-z]+)/gi, ', \"$2\" : $1').slice(1) + " }");
-    var fields = ['y', 'm', 'd', 'h', 'min', 's'];
-    var offset = {};
-    for (field in fields) {
-        offset[field] = tmp[field] ? tmp[field] : 0;
-    }
-    return offset;
-}
-
-app.applyDateOffset = function(oldDate, offset) {
-    var date = new Date(oldDate.getTime() - (offset.s + 60 * (offset.min + 60 * (offset.h + 24 * offset.d))));
-    var monthOffset = offset.m % 12;
-    var newMonth;
-    if (monthOffset > date.getMonth()) {
-        newMonth = 12 - monthOffset + date.getMonth();
-        offset.y = offset.y + 1;
-    }
-    date.setMonth(newMonth);
-    date.setFullYear(date.getFullYear() - offset.y);
-    return date;
-}
-
 // params - options to process from request query
 // filters - options that could be in fileds=... query
 app.processOptions  = function(req, params, filters) {
     var options = {};
+    var datetime = require('./datetime');
     filters = filters.concat(params);
     params = params.concat(['fields', 'offset', 'limit']);
     // Get callback to return data as JSONP
@@ -78,9 +56,9 @@ app.processOptions  = function(req, params, filters) {
     options.offset = options.offset ? parseInt(options.offset) : 0;
     options.limit = options.limit ? parseInt(options.limit) : 10;
     if (req.query["from"])
-        options.from = app.parseDate(req.query["from"]);
+        options.from = datetime.parseDate(req.query["from"]);
     if (req.query["to"])
-        options.from = app.parseDate(req.query["to"]);
+        options.from = datetime.parseDate(req.query["to"]);
     return options;
 }
 //noinspection JSValidateTypes
